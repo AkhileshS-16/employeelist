@@ -10,34 +10,30 @@
 //   console.log("Server is running on port 3000");
 // });
 
-const express = require("express");
+import express from "express";
 import { Request, Response } from "express";
-const server = new express();
+import employeeRouter from "./employeeRouter";
+import loggerMiddleware from "./loggerMiddleware";
+import bodyParser from "body-parser";
+import dataSource from "./data-source";
 
-interface Profile {
-  Name: string;
-  Age: number;
-}
-
-interface Data {
-  profile: Profile;
-}
+const server = express();
+server.use(loggerMiddleware);
+server.use(bodyParser.json());
+server.use("/employees", employeeRouter);
 
 server.get("/", (req: Request, res: Response) => {
   res.status(200).send("Hello World");
 });
 
-server.get("/getData", (req: Request, res: Response) => {
-  let data: Data = {
-    profile: {
-      Name: "Akhilesh",
-      Age: 22,
-    },
-  };
-  console.log(data.profile.Name);
-  res.status(200).send(data);
-});
-
-server.listen(3001, () => {
-  console.log("Server is running on port 3000");
-});
+(async () => {
+  try {
+    await dataSource.initialize();
+  } catch (e) {
+    console.log("Failed", e);
+    process.exit(1);
+  }
+  server.listen(3000, () => {
+    console.log("Server is running on port 3000");
+  });
+})();
