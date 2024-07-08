@@ -4,6 +4,7 @@ import {
   IsLowercase,
   IsNotEmpty,
   IsNumber,
+  IsOptional,
   IsString,
   ValidateNested,
 } from "class-validator";
@@ -38,4 +39,8 @@ export class CreateEmployeeDto {
   @IsNotEmpty()
   @IsEnum(Role)
   role: Role;
+
+  @IsNumber()
+  @IsOptional()
+  department_id?: number;
 }

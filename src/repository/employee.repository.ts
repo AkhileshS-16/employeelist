@@ -5,7 +5,7 @@ class EmployeeRepository {
   constructor(private repository: Repository<Employee>) {}
 
   public find = async (): Promise<Employee[]> => {
-    return this.repository.find({ relations: ["address"] });
+    return this.repository.find({ relations: ["address", "department"] });
   };
 
   findoneby = async (filter: Partial<Employee>) => {

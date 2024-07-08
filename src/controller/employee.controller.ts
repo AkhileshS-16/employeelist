@@ -14,11 +14,11 @@ class EmployeeController {
   constructor(private employeeService: EmployeeService) {
     this.router = express.Router();
 
-    this.router.get("/", this.getAllEmployees);
-    this.router.get("/:id", this.getEmployeeById);
+    this.router.get("/", authorize, this.getAllEmployees);
+    this.router.get("/:id", authorize, this.getEmployeeById);
     this.router.post("/", authorize, this.createEmployee);
-    this.router.delete("/:id", this.deleteEmployee);
-    this.router.put("/:id", this.updateEmployee);
+    this.router.delete("/:id", authorize, this.deleteEmployee);
+    this.router.put("/:id", authorize, this.updateEmployee);
     this.router.post("/login", this.loginEmployee);
   }
 
@@ -34,7 +34,7 @@ class EmployeeController {
       if (!employee) {
         const error = new HttpException(
           404,
-          `No Employee found with id: ${req.params.id}`
+          `No Employee found with id: ${employeeid}`
         );
         throw error;
       }
@@ -53,7 +53,7 @@ class EmployeeController {
       const role = req.role;
       if (role !== Role.HR) {
         throw new HttpException(
-          403,
+          401,
           "You are not authorized to create employee"
         );
       }
@@ -70,7 +70,8 @@ class EmployeeController {
         createEmployeeDto.age,
         createEmployeeDto.address,
         createEmployeeDto.password,
-        createEmployeeDto.role
+        createEmployeeDto.role,
+        createEmployeeDto.department_id
       );
       // const savedEmployee = await this.employeeService.CreateEmployee(
       //   req.body.name,
@@ -86,18 +87,36 @@ class EmployeeController {
     }
   };
 
-  public deleteEmployee = async (req, res) => {
-    const employee = await this.employeeService.DeleteEmployee(req.params.id);
-    console.log(employee);
-    res.status(204).send();
+  public deleteEmployee = async (req, res, next) => {
+    try {
+      const role = req.role;
+      if (role !== Role.HR) {
+        throw new HttpException(
+          401,
+          "You are not authorized to delete employee"
+        );
+      }
+      const employee = await this.employeeService.DeleteEmployee(req.params.id);
+      console.log(employee);
+      res.status(204).send();
+    } catch (err) {
+      next(err);
+    }
   };
 
   public updateEmployee = async (req, res, next) => {
     try {
+      const role = req.role;
+      if (role !== Role.HR) {
+        throw new HttpException(
+          401,
+          "You are not authorized to update employee"
+        );
+      }
       const employeeDto = plainToInstance(CreateEmployeeDto, req.body);
       const errors = await validate(employeeDto);
 
-      if (errors.length) {
+      if (errors.length > 0) {
         console.log(JSON.stringify(errors));
         throw new HttpException(400, JSON.stringify(errors));
       }
@@ -107,7 +126,8 @@ class EmployeeController {
         employeeDto.name,
         employeeDto.email,
         employeeDto.age,
-        employeeDto.address
+        employeeDto.address,
+        employeeDto.department_id
       );
 
       res.status(200).send(employee);

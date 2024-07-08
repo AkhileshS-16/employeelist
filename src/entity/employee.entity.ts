@@ -10,7 +10,7 @@ import {
 import AbstractEntity from "./abstract-identity";
 import Address from "./address.entity";
 import { Role } from "../utils/enums/role.enums";
-// import Department from "./department.enitity";
+import Department from "./department.enitity";
 
 @Entity()
 class Employee extends AbstractEntity {
@@ -35,8 +35,8 @@ class Employee extends AbstractEntity {
   @Column({ nullable: true })
   role: Role;
 
-  // @ManyToOne(() => Department, (department) => department.employees)
-  // departmeent: Department;
+  @ManyToOne(() => Department, (department) => department.employees)
+  department: Department;
 }
 
 export default Employee;

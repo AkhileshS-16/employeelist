@@ -7,9 +7,16 @@ import bcrypt from "bcrypt";
 import jsonwebtoken from "jsonwebtoken";
 import { jwtPayload } from "../utils/jwtPayload";
 import { JWT_SECRET, JWT_validity } from "../utils/constants";
+import DepartmentService from "./department.service";
+import DepartmentRepository from "../repository/department.repository";
+import dataSource from "../db/data-source.db";
+import Department from "../entity/department.enitity";
 
 class EmployeeService {
-  constructor(private employeeRepository: EmployeeRepository) {}
+  constructor(
+    private employeeRepository: EmployeeRepository,
+    private departmentService: DepartmentService
+  ) {}
 
   GetAllEmployees = async () => {
     return this.employeeRepository.find();
@@ -25,12 +32,18 @@ class EmployeeService {
     age: number,
     address: any,
     password: string,
-    role: Role
+    role: Role,
+    department_id: number
   ) => {
     const newEmployee = new Employee();
     newEmployee.name = name;
     newEmployee.email = email;
     newEmployee.age = age;
+    const add_department = await this.departmentService.GetDepartmentById(
+      department_id
+    );
+    if (!add_department) throw new HttpException(404, "Department Not Found");
+    newEmployee.department = add_department;
 
     const newaddress = new Address();
     newaddress.line1 = address.line1;
@@ -47,15 +60,21 @@ class EmployeeService {
     name: string,
     email: string,
     age: number,
-    address: any
+    address: any,
+    department_id: number
   ): Promise<Employee | null> => {
     const employee = await this.employeeRepository.findoneby({ id });
-    if (!employee) return null;
+    const add_department = await this.departmentService.GetDepartmentById(
+      department_id
+    );
+    if (!employee) throw new HttpException(404, "Employee Not Found");
+    if (!add_department) throw new HttpException(404, "Employee Not Found");
     employee.name = name;
     employee.email = email;
     employee.age = age;
     employee.address.line1 = address.line1;
     employee.address.pincode = address.pincode;
+    employee.department = add_department;
     return this.employeeRepository.save(employee);
   };
 

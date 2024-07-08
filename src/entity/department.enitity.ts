@@ -1,14 +1,14 @@
-// import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-// import AbstractEntity from "./abstract-identity";
-// import Employee from "./employee.entity";
+import { Column, Entity, OneToMany } from "typeorm";
+import AbstractEntity from "./abstract-identity";
+import Employee from "./employee.entity";
 
-// @Entity
-// class Department extends AbstractEntity {
-//   @Column()
-//   name: string;
+@Entity()
+class Department extends AbstractEntity {
+  @Column()
+  name: string;
 
-//   @OneToMany(() => Employee, (employee) => employee.department)
-//   employees: Employee[];
-// }
+  @OneToMany(() => Employee, (employee) => employee.department)
+  employees: Employee[];
+}
 
-// export default Department;
+export default Department;

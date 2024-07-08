@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from "express";
 import HttpException from "../exceptions/http.exceptions";
-import { Code } from "typeorm";
 
 const errorMiddleware = (
   error: Error,
