@@ -5,7 +5,7 @@ import Employee from "./employee.entity";
 @Entity()
 class Department extends AbstractEntity {
   @Column()
-  name: string;
+  dname: string;
 
   @OneToMany(() => Employee, (employee) => employee.department)
   employees: Employee[];

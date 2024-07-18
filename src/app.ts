@@ -15,6 +15,7 @@ import { Request, Response } from "express";
 import employeeRouter from "./routes/employee.routes";
 import loggerMiddleware from "./middleware/logger.middleware";
 import bodyParser from "body-parser";
+import cors from "cors";
 import dataSource from "./db/data-source.db";
 import HttpException from "./exceptions/http.exceptions";
 import errorMiddleware from "./middleware/error.middleware";
@@ -22,6 +23,7 @@ import departmentRouter from "./routes/department.routes";
 
 const server = express();
 server.use(loggerMiddleware);
+server.use(cors());
 server.use(bodyParser.json());
 server.use("/employees", employeeRouter);
 server.use("/departments", departmentRouter);
@@ -38,7 +40,7 @@ server.get("/", (req: Request, res: Response) => {
     console.log("Failed", e);
     process.exit(1);
   }
-  let port = 3001;
+  let port = 3000;
   server.listen(port, () => {
     console.log(`Server is running on port ${port}`);
   });

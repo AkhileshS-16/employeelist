@@ -21,7 +21,7 @@ class DepartmentService {
 
   CreateDepartment = async (name: string) => {
     const newDepartment = new Department();
-    newDepartment.name = name;
+    newDepartment.dname = name;
 
     return this.departmentRepository.save(newDepartment);
   };
@@ -35,7 +35,7 @@ class DepartmentService {
   UpdateDepartment = async (id: number, name: string) => {
     const department = await this.departmentRepository.findoneby({ id });
     if (!department) throw new HttpException(404, "Department Not Found");
-    department.name = name;
+    department.dname = name;
     return this.departmentRepository.save(department);
 
     // const employeeRepository = new EmployeeRepository(

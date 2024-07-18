@@ -15,7 +15,7 @@ class EmployeeController {
     this.router = express.Router();
 
     this.router.get("/", authorize, this.getAllEmployees);
-    this.router.get("/:id", authorize, this.getEmployeeById);
+    this.router.get("/details/:id", authorize, this.getEmployeeById);
     this.router.post("/", authorize, this.createEmployee);
     this.router.delete("/:id", authorize, this.deleteEmployee);
     this.router.put("/:id", authorize, this.updateEmployee);
@@ -65,12 +65,12 @@ class EmployeeController {
         throw new HttpException(400, JSON.stringify(errors));
       }
       const savedEmployee = await this.employeeService.CreateEmployee(
-        createEmployeeDto.name,
+        createEmployeeDto.ename,
         createEmployeeDto.email,
-        createEmployeeDto.age,
+        createEmployeeDto.status,
         createEmployeeDto.address,
         createEmployeeDto.password,
-        createEmployeeDto.role,
+        createEmployeeDto.Role,
         createEmployeeDto.department_id
       );
       // const savedEmployee = await this.employeeService.CreateEmployee(
@@ -123,9 +123,10 @@ class EmployeeController {
 
       const employee = await this.employeeService.UpdateEmployee(
         req.params.id,
-        employeeDto.name,
+        employeeDto.ename,
         employeeDto.email,
-        employeeDto.age,
+        employeeDto.status,
+        employeeDto.Role,
         employeeDto.address,
         employeeDto.department_id
       );

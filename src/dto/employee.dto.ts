@@ -15,17 +15,15 @@ import { Role } from "../utils/enums/role.enums";
 
 export class CreateEmployeeDto {
   @IsNotEmpty()
-  @IsNotEmpty()
-  name: string;
+  ename: string;
 
   @IsEmail()
-  @IsNotEmpty()
   @IsString()
   email: string;
 
   @IsNotEmpty()
-  @IsNumber()
-  age: number;
+  @IsString()
+  status: string;
 
   @IsNotEmpty()
   @ValidateNested({ each: true })
@@ -38,7 +36,7 @@ export class CreateEmployeeDto {
 
   @IsNotEmpty()
   @IsEnum(Role)
-  role: Role;
+  Role: Role;
 
   @IsNumber()
   @IsOptional()

@@ -62,7 +62,6 @@
 //     const mockEmployee1: Partial<Employee> = {
 //       id: 1,
 //       name: "Alice",
-//       email: "alice@gmail.com",
 //       age: 22,
 //       role: Role.HR,
 //       address: mockAddress,
@@ -77,15 +76,9 @@
 //     //   address: mockAddress,
 //     //   department: mockDepartment2,
 //     // };
-//     const mockfn1 = jest
-//       .fn(employeeRepository.findoneby)
-//       .mockResolvedValue(mockEmployee1 as Employee);
-//     employeeRepository.findoneby = mockfn1;
-//     const mockfn2 = jest
-//       .fn(departmentService.GetDepartmentById)
-//       .mockResolvedValue(mockDepartment1 as Department);
-//     departmentService.GetDepartmentById = mockfn2;
-//     const mockfn3 = jest.fn(employeeRepository.save).mockResolvedValue; //CONTINUE;
+//     const mockfn = jest
+//       .fn(employeeRepository.save)
+//       .mockResolvedValue(mockEmployee1);
 //     const user1 = await employeeService.UpdateEmployee(
 //       1,
 //       "alice@gmail.com",

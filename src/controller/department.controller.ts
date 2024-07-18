@@ -55,7 +55,7 @@ class DepartmentController {
         throw new HttpException(400, JSON.stringify(errors));
       }
       const savedDepartment = await this.departmentService.CreateDepartment(
-        createDepartmentDto.name
+        createDepartmentDto.dname
       );
       res.status(201).send(savedDepartment);
     } catch (err) {
@@ -105,7 +105,7 @@ class DepartmentController {
 
       const updateDepartment = await this.departmentService.UpdateDepartment(
         req.params.id,
-        createDepartmentDto.name
+        createDepartmentDto.dname
       );
       res.status(201).send(updateDepartment);
     } catch (err) {

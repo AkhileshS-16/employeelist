@@ -18,10 +18,10 @@ class Employee extends AbstractEntity {
   email: string;
 
   @Column()
-  name: string;
+  ename: string;
 
   @Column()
-  age: number;
+  status: string;
 
   @OneToOne(() => Address, (address) => address.employee, {
     cascade: true,
@@ -33,7 +33,7 @@ class Employee extends AbstractEntity {
   password: string;
 
   @Column({ nullable: true })
-  role: Role;
+  Role: Role;
 
   @ManyToOne(() => Department, (department) => department.employees)
   department: Department;

@@ -3,7 +3,6 @@ import { CreateEmployeeDto } from "./employee.dto";
 import { Type } from "class-transformer";
 
 export class CreateDepartmentDto {
-  @IsNotEmpty()
   @IsString()
-  name: string;
+  dname: string;
 }
